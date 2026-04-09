@@ -1,14 +1,31 @@
 import { WeatherData, WeatherType } from '@/types/weather';
-import { getWeatherInfo, getBackgroundClass } from '@/utils/weatherUtils';
+import { getWeatherInfo } from '@/utils/weatherUtils';
 import heroBg from '@/assets/hero-bg.jpg';
+import sunnyVideo from '@/assets/videos/sunny.mp4.asset.json';
+import rainyVideo from '@/assets/videos/rainy.mp4.asset.json';
+import snowyVideo from '@/assets/videos/snowy.mp4.asset.json';
+import cloudyVideo from '@/assets/videos/cloudy.mp4.asset.json';
+import stormyVideo from '@/assets/videos/stormy.mp4.asset.json';
+import nightVideo from '@/assets/videos/night.mp4.asset.json';
+import foggyVideo from '@/assets/videos/foggy.mp4.asset.json';
 
 interface Props {
   weather: WeatherData | null;
 }
 
+const videoMap: Record<WeatherType, string> = {
+  clear: sunnyVideo.url,
+  cloudy: cloudyVideo.url,
+  rain: rainyVideo.url,
+  snow: snowyVideo.url,
+  storm: stormyVideo.url,
+  fog: foggyVideo.url,
+  night: nightVideo.url,
+};
+
 function RainEffect() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
       {Array.from({ length: 60 }).map((_, i) => (
         <div
           key={i}
@@ -27,7 +44,7 @@ function RainEffect() {
 
 function SnowEffect() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-[2]">
       {Array.from({ length: 40 }).map((_, i) => (
         <div
           key={i}
@@ -59,11 +76,21 @@ export default function WeatherBackground({ weather }: Props) {
   }
 
   const { type } = getWeatherInfo(weather.current.weatherCode, weather.current.isDay);
-  const bgClass = getBackgroundClass(type);
+  const videoSrc = videoMap[type] || videoMap.clear;
 
   return (
-    <div className={`fixed inset-0 z-0 ${bgClass} animate-gradient transition-all duration-1000`}>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30" />
+    <div className="fixed inset-0 z-0">
+      <video
+        key={videoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="w-full h-full object-cover"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/50 z-[1]" />
       {type === 'rain' && <RainEffect />}
       {type === 'snow' && <SnowEffect />}
     </div>
