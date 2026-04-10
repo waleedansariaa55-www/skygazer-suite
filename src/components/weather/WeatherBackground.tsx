@@ -1,26 +1,19 @@
 import { WeatherData, WeatherType } from '@/types/weather';
 import { getWeatherInfo } from '@/utils/weatherUtils';
 import heroBg from '@/assets/hero-bg.jpg';
-import sunnyVideo from '@/assets/videos/sunny.mp4.asset.json';
-import rainyVideo from '@/assets/videos/rainy.mp4.asset.json';
-import snowyVideo from '@/assets/videos/snowy.mp4.asset.json';
-import cloudyVideo from '@/assets/videos/cloudy.mp4.asset.json';
-import stormyVideo from '@/assets/videos/stormy.mp4.asset.json';
-import nightVideo from '@/assets/videos/night.mp4.asset.json';
-import foggyVideo from '@/assets/videos/foggy.mp4.asset.json';
 
 interface Props {
   weather: WeatherData | null;
 }
 
 const videoMap: Record<WeatherType, string> = {
-  clear: sunnyVideo.url,
-  cloudy: cloudyVideo.url,
-  rain: rainyVideo.url,
-  snow: snowyVideo.url,
-  storm: stormyVideo.url,
-  fog: foggyVideo.url,
-  night: nightVideo.url,
+  clear: '/videos/sunny.mp4',
+  cloudy: '/videos/cloudy.mp4',
+  rain: '/videos/rainy.mp4',
+  snow: '/videos/snowy.mp4',
+  storm: '/videos/stormy.mp4',
+  fog: '/videos/foggy.mp4',
+  night: '/videos/night.mp4',
 };
 
 function RainEffect() {
